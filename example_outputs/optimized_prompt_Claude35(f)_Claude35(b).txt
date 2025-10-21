@@ -1,0 +1,363 @@
+Training step 1. Epoch 0: : 1it [01:25, 85.58s/it]
+
+Read the PDF file and extract the following parameters for each single-phase high-entropy alloy: name, nominal_composition, measured_composition (if available), lattice_constant (in angstroms, or None if absent), phases, alloy_condition, and doi (if available). Extract the parameters primarily from the text of the PDF. Figures and tables may be used to support the extraction, but the primary source of information should be the text. For multi-phase alloys, report that the alloy is multi-phase and list the constituent phases, but do not include them in the main output. The output should be in JSON format for each single-phase alloy identified.
+TF-IDF Cosine Similarity: 0.4733
+
+Training step 2. Epoch 0: : 2it [03:11, 97.69s/it]
+
+Read the PDF file and extract the following parameters for each high-entropy alloy: name, nominal_composition, measured_composition (if available), lattice_constant (in angstroms, or None if absent), phases, alloy_condition, and doi (if available). Extract the parameters from both the text of the PDF and supporting figures and tables. If conflicting information exists, clearly indicate the source and explain the discrepancy.
+
+Consider an alloy single-phase if a single phase constitutes at least 95% of its composition as reported in the paper. For multi-phase alloys, list all phases with their relative abundance and include them in the output with a flag indicating multi-phase status.
+
+Represent nominal and measured compositions as molar ratios (e.g., Al1.0Co1.0Cr1.0Fe1.0Ni1.0). If a parameter cannot be determined with confidence, indicate 'Not Available' and state the reason (e.g., 'information not provided in the text or figures').
+
+The output should be in the following JSON format for each alloy:
+
+{
+    "name": "AlloyName",
+    "nominal_composition": "Element1A.BCElement2X.YElement3Z...",
+    "measured_composition": "Element1P.QElement2R.SElement3T...",
+    "lattice_constant": 0.000,
+    "phases": ["Phase1", "Phase2", ...],
+    "phase_abundances": {"Phase1": 00%, "Phase2": 00%, ...},
+    "alloy_condition": "condition",
+    "doi": "DOI",
+    "is_single_phase": true/false
+}
+
+Include all alloys mentioned in the paper, regardless of their phase composition.
+TF-IDF Cosine Similarity: 0.7723
+
+Training step 2. Epoch 0: : 3it [04:02, 80.78s/it]
+
+Read the PDF file and extract the following parameters for each high-entropy alloy mentioned in the paper:
+
+1. name
+2. nominal_composition (in atomic percentages)
+3. measured_composition (in atomic percentages, or "Not Available" if absent)
+4. lattice_constant (in angstroms, rounded to 3 decimal places, or "Not Available" if absent)
+5. phases (list all identified phases)
+6. phase_abundances (for each phase, report percentage if available and >5%, otherwise "Not Available")
+7. alloy_condition
+8. doi (if available, otherwise "Not Available")
+9. is_single_phase (true if one phase constitutes ≥95% of composition, false otherwise)
+
+Extract parameters from both text and supporting figures/tables. If conflicting information exists between text and figures/tables, prioritize text data and note the discrepancy.
+
+Report all numerical values to 2 decimal places unless otherwise specified. If a parameter cannot be determined with confidence, use "Not Available" and briefly explain why.
+
+The output should be in the following JSON format for each alloy:
+
+{
+    "name": "AlloyName",
+    "nominal_composition": "Element1: XX.XX%, Element2: YY.YY%, ...",
+    "measured_composition": "Element1: XX.XX%, Element2: YY.YY%, ...",
+    "lattice_constant": X.XXX,
+    "phases": ["Phase1", "Phase2", ...],
+    "phase_abundances": {"Phase1": XX%, "Phase2": YY%, ...},
+    "alloy_condition": "condition",
+    "doi": "DOI or Not Available",
+    "is_single_phase": true/false
+}
+
+Example outputs:
+
+1. Single-phase alloy with complete data:
+{
+    "name": "HfNbTaTiZr",
+    "nominal_composition": "Hf: 20.00%, Nb: 20.00%, Ta: 20.00%, Ti: 20.00%, Zr: 20.00%",
+    "measured_composition": "Hf: 20.80%, Nb: 18.90%, Ta: 20.20%, Ti: 20.20%, Zr: 19.90%",
+    "lattice_constant": 3.414,
+    "phases": ["BCC"],
+    "phase_abundances": {"BCC": 100%},
+    "alloy_condition": "As-Cast",
+    "doi": "10.1016/j.jallcom.2014.11.064",
+    "is_single_phase": true
+}
+
+2. Multi-phase alloy with incomplete data:
+{
+    "name": "AlHfNbTaTiZr",
+    "nominal_composition": "Al: 16.67%, Hf: 16.67%, Nb: 16.67%, Ta: 16.67%, Ti: 16.67%, Zr: 16.67%",
+    "measured_composition": "Al: 16.20%, Hf: 16.40%, Nb: 16.90%, Ta: 16.40%, Ti: 17.40%, Zr: 16.60%",
+    "lattice_constant": "Not Available",
+    "phases": ["BCC (Nb,Ta-rich)", "BCC (Al,Hf,Zr-rich)"],
+    "phase_abundances": {"BCC (Nb,Ta-rich)": "Not Available", "BCC (Al,Hf,Zr-rich)": "Not Available"},
+    "alloy_condition": "As-Cast",
+    "doi": "10.1016/j.jallcom.2014.11.064",
+    "is_single_phase": false
+}
+
+Include all alloys mentioned in the paper, regardless of their phase composition.
+TF-IDF Cosine Similarity: 0.4621
+
+Training step 1. Epoch 1: : 1it [02:34, 154.55s/it]
+
+Read the PDF file and extract the following parameters for each high-entropy alloy mentioned in the paper, using the specified formats:
+
+1. name (string, e.g., "AlNbTiMoV")
+2. nominal_composition (string, molar ratios, e.g., "Al1.0Nb1.0Ti1.0Mo1.0V1.0")
+3. measured_composition (string, atomic percentages or "Not Available" if absent, e.g., "Al: 20.00%, Nb: 20.00%, Ti: 20.00%, Mo: 20.00%, V: 20.00%")
+4. lattice_constant (float, in angstroms, rounded to 3 decimal places, or "Not Available" if absent)
+5. phases (list of strings, e.g., ["BCC"])
+6. alloy_condition (string, e.g., "As-Cast")
+7. doi (string, or "Not Available" if absent)
+
+Extract parameters from both text and supporting figures/tables. If conflicting information exists between text and figures/tables, prioritize text data and note the discrepancy. If a parameter cannot be determined with certainty, use "Not Available". Do not attempt to infer or estimate missing values.
+
+Report all numerical values to 3 decimal places unless otherwise specified.
+
+The output should be a list of JSON objects, one for each alloy, in the following format:
+
+[
+    {
+        "name": "AlloyName",
+        "nominal_composition": "Element1: X.X, Element2: Y.Y, ...",
+        "measured_composition": "Element1: XX.XXX%, Element2: YY.YYY%, ...",
+        "lattice_constant": X.XXX,
+        "phases": ["Phase1", "Phase2", ...],
+        "alloy_condition": "condition",
+        "doi": "DOI or Not Available"
+    },
+    ...
+]
+
+Include only alloys for which complete nominal composition and at least one other parameter can be extracted with certainty.
+TF-IDF Cosine Similarity: 0.5876
+
+Training step 2. Epoch 1: : 2it [04:26, 129.68s/it]
+
+Read the PDF file and extract the following parameters for each high-entropy alloy mentioned in the paper, using the specified formats:
+
+1. name (string, e.g., "AlNbTiMoV")
+2. nominal_composition (string, molar ratios, e.g., "Al1.0Nb1.0Ti1.0Mo1.0V1.0")
+3. measured_composition (string, atomic percentages without % sign, e.g., "Al20.00Nb20.00Ti20.00Mo20.00V20.00")
+4. lattice_constant (float, in angstroms, rounded to 3 decimal places)
+5. phases (string, e.g., "BCC")
+6. alloy_condition (string, e.g., "As-Cast")
+7. doi (string)
+
+Extract parameters from both text and supporting figures/tables. If conflicting information exists between text and figures/tables, prioritize text data and note the discrepancy in a separate "data_conflict" field (string). If a parameter cannot be determined with high confidence (>90% certainty), use "Not Available". Do not attempt to infer or estimate missing values.
+
+Report all numerical values to 3 decimal places unless otherwise specified.
+
+The output should be a list of JSON objects, one for each alloy, in the following format:
+
+[
+    {
+        "name": "AlloyName",
+        "nominal_composition": "Element1X.XElement2Y.Y...",
+        "measured_composition": "Element1XX.XXXElement2YY.YYY...",
+        "lattice_constant": X.XXX,
+        "phases": "Phase1,Phase2,...",
+        "alloy_condition": "condition",
+        "doi": "DOI",
+        "data_conflict": "Description of any data conflicts or 'None'"
+    },
+    ...
+]
+
+Include only alloys for which complete nominal composition and at least three other parameters can be extracted with high confidence (>90% certainty). If multiple lattice constants are reported for different phases, list all values separated by commas.
+TF-IDF Cosine Similarity: 0.7560
+
+Training step 2. Epoch 1: : 3it [05:04, 101.37s/it]
+
+Read the PDF file and extract the following parameters for the AlCoCrFeNi and AlCoCrFeNiMo0.1 alloys only:
+
+1. name (string, e.g., "AlNbTiMoV")
+2. nominal_composition (string, molar ratios to one decimal place, e.g., "Al1.0Nb1.0Ti1.0Mo1.0V1.0")
+3. measured_composition (string, atomic percentages to one decimal place without % sign, e.g., "Al20.0Nb20.0Ti20.0Mo20.0V20.0")
+4. lattice_constant (float, in angstroms, rounded to 3 decimal places)
+5. phases (string, e.g., "BCC")
+6. alloy_condition (string, e.g., "As-Cast")
+7. doi (string)
+
+Extract parameters primarily from the text. Use data from figures/tables only if the text data is incomplete and this incompleteness is explicitly stated. If a parameter cannot be determined with high confidence (>90% certainty), omit it from the output rather than using a placeholder.
+
+The output should be a list of JSON objects, one for each of the two specified alloys, in the following format:
+
+[
+    {
+        "name": "AlloyName",
+        "nominal_composition": "Element1X.XElement2Y.Y...",
+        "measured_composition": "Element1XX.XElement2YY.Y...",
+        "lattice_constant": X.XXX,
+        "phases": "Phase1,Phase2,...",
+        "alloy_condition": "condition",
+        "doi": "DOI"
+    },
+    ...
+]
+
+Include an alloy in the output only if its nominal composition and at least three other parameters (specifically lattice constant, phases, and alloy condition) can be extracted with high confidence (>90% certainty). Ensure that the output format and data closely match the provided ground truth example.
+TF-IDF Cosine Similarity: 0.7311
+
+Training step 1. Epoch 2: : 1it [01:32, 92.20s/it]
+
+Read the PDF file and extract the following parameters for the AlCoCrFeNbxNi alloy series, focusing specifically on the compositions where x = 0 (AlCoCrFeNi) and x = 0.1 (AlCoCrFeNb0.1Ni):
+
+1. name (string, e.g., "AlCoCrFeNi")
+2. nominal_composition (string, molar ratios to one decimal place, e.g., "Al1.0Co1.0Cr1.0Fe1.0Ni1.0")
+3. measured_composition (string, atomic percentages to one decimal place without % sign, e.g., "Al20.0Co20.0Cr20.0Fe20.0Ni20.0")
+4. lattice_constant (float, in angstroms, rounded to 3 decimal places)
+5. phases (string, e.g., "BCC")
+6. alloy_condition (string, e.g., "As-Cast")
+7. doi (string)
+
+Extract parameters primarily from the text. Use data from figures/tables only if the text data is incomplete and this incompleteness is explicitly stated. If a parameter cannot be determined with high confidence (>90% certainty), omit it from the output rather than using a placeholder.
+
+The output should be a list of JSON objects, one for each of the two specified alloys, in the following format:
+
+[
+    {
+        "name": "AlloyName",
+        "nominal_composition": "Element1X.XElement2Y.Y...",
+        "measured_composition": "Element1XX.XElement2YY.Y...",
+        "lattice_constant": X.XXX,
+        "phases": "Phase1,Phase2,...",
+        "alloy_condition": "condition",
+        "doi": "DOI"
+    },
+    {
+        "name": "AlloyName",
+        "nominal_composition": "Element1X.XElement2Y.Y...",
+        "measured_composition": "Element1XX.XElement2YY.Y...",
+        "lattice_constant": X.XXX,
+        "phases": "Phase1,Phase2,...",
+        "alloy_condition": "condition",
+        "doi": "DOI"
+    }
+]
+
+Include an alloy in the output only if its nominal composition and at least three other parameters (specifically lattice constant, phases, and alloy condition) can be extracted with high confidence (>90% certainty). Ensure that the output format and data closely match the provided schema.
+TF-IDF Cosine Similarity: 0.9315
+
+Training step 2. Epoch 2: : 2it [03:12, 96.82s/it]
+
+Read the PDF file and extract the following parameters for all high-entropy alloys discussed in the results section:
+
+1. name (string, e.g., "AlCoCrFeNi")
+2. nominal_composition (string, exactly as written in the paper)
+3. measured_composition (string, exactly as written in the paper)
+4. lattice_constant (float, in angstroms, rounded to 3 decimal places)
+5. phases (string, e.g., "BCC")
+6. alloy_condition (string, e.g., "As-Cast")
+7. doi (string)
+
+Extract parameters primarily from the text. Use data from tables only if the text data is incomplete. Use figures as a last resort. If a parameter is truly missing from the PDF for a given alloy, explicitly report it as "Not found" rather than omitting it.
+
+For each parameter, include a confidence score (0-100) indicating your certainty in the extracted information. Consider a score of 90 or above as high confidence.
+
+The output should be a list of JSON objects, one for each alloy discussed in the paper, in the following format:
+
+[
+    {
+        "name": "AlloyName",
+        "nominal_composition": "Composition as written",
+        "measured_composition": "Composition as written",
+        "lattice_constant": X.XXX,
+        "phases": "Phase1,Phase2,...",
+        "alloy_condition": "condition",
+        "doi": "DOI",
+        "confidence_scores": {
+            "name": XX,
+            "nominal_composition": XX,
+            "measured_composition": XX,
+            "lattice_constant": XX,
+            "phases": XX,
+            "alloy_condition": XX,
+            "doi": XX
+        }
+    },
+    ...
+]
+
+Include an alloy in the output even if not all parameters can be extracted. Ensure that the output format and data closely match the provided schema.
+TF-IDF Cosine Similarity: 0.6840
+
+Training step 2. Epoch 2: : 3it [04:26, 88.72s/it]
+
+Read the PDF file and extract the following parameters for all high-entropy alloys discussed in the results section:
+
+1. name (string, e.g., "AlCoCrFeNi")
+2. nominal_composition (string, representing the stoichiometric ratio of each element, e.g., "Al1.0Co1.0Cr1.0Fe1.0Ni1.0". If an element's ratio is not explicitly stated, assume 1.0)
+3. measured_composition (string, exactly as written in the paper)
+4. lattice_constant (float, in angstroms, rounded to 3 decimal places)
+5. phases (string, e.g., "BCC")
+6. alloy_condition (string, e.g., "As-Cast")
+7. doi (string)
+
+Extract parameters primarily from the text. Use data from tables only if the text data is incomplete. Use figures as a last resort. If a parameter is truly missing from the PDF for a given alloy, explicitly report it as "Not found" rather than omitting it.
+
+For each parameter, include a confidence score (0-100) indicating your certainty in the extracted information. Consider a score of 90 or above as high confidence.
+
+The output should be a list of JSON objects, one for each alloy discussed in the paper, in the following format:
+
+[
+    {
+        "name": "AlloyName",
+        "nominal_composition": "Element11.0Element21.0...",
+        "measured_composition": "Composition as written",
+        "lattice_constant": X.XXX,
+        "phases": "Phase1,Phase2,...",
+        "alloy_condition": "condition",
+        "doi": "DOI",
+        "confidence_scores": {
+            "name": XX,
+            "nominal_composition": XX,
+            "measured_composition": XX,
+            "lattice_constant": XX,
+            "phases": XX,
+            "alloy_condition": XX,
+            "doi": XX
+        }
+    },
+    ...
+]
+
+Include an alloy in the output only if it is explicitly discussed in the results section. Ensure that the output format and data closely match the provided schema. If information for a specific parameter is not available, use "Not found" and assign a low confidence score.
+
+Example of correct output:
+[
+    {
+        "name": "HfNbTaTiZr",
+        "nominal_composition": "Hf1.0Nb1.0Ta1.0Ti1.0Zr1.0",
+        "measured_composition": "Hf20.8Nb18.9Ta20.2Ti20.2Zr19.9",
+        "lattice_constant": 3.414,
+        "phases": "BCC",
+        "alloy_condition": "As-Cast",
+        "doi": "10.1016/j.jallcom.2014.11.064",
+        "confidence_scores": {
+            "name": 100,
+            "nominal_composition": 90,
+            "measured_composition": 95,
+            "lattice_constant": 100,
+            "phases": 100,
+            "alloy_condition": 95,
+            "doi": 100
+        }
+    }
+]
+
+Example of output with missing data:
+[
+    {
+        "name": "AlCoCrFeNi",
+        "nominal_composition": "Al1.0Co1.0Cr1.0Fe1.0Ni1.0",
+        "measured_composition": "Not found",
+        "lattice_constant": 3.567,
+        "phases": "FCC",
+        "alloy_condition": "Not found",
+        "doi": "10.1016/j.example.2023.01.001",
+        "confidence_scores": {
+            "name": 100,
+            "nominal_composition": 90,
+            "measured_composition": 0,
+            "lattice_constant": 95,
+            "phases": 100,
+            "alloy_condition": 0,
+            "doi": 100
+        }
+    }
+]
+TF-IDF Cosine Similarity: 0.8533
