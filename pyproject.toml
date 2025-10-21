@@ -1,0 +1,20 @@
+[project]
+name = "expert-paper-extract"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=0.71.0",
+    "ipykernel>=7.0.1",
+    "jupyter>=1.1.1",
+    "langfun>=0.0.1",
+    "pypdf>=6.1.2",
+    "python-dotenv>=1.1.1",
+    "scikit-learn>=1.7.2",
+    "textgrad>=0.1.8",
+    "tiktoken>=0.12.0",
+]
+
+[tool.uv.sources]
+langfun = { git = "https://github.com/google/langfun", rev = "main" }
