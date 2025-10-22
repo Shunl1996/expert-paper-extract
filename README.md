@@ -56,7 +56,7 @@ Never commit real keys to version control; keep `.env` listed in `.gitignore`.
 ## Example outputs and utilities
 
 - `example_outputs/optimized_prompt_Claude35(f)_Claude35(b).md` documents an optimized prompt from previous experiments, while the accompanying `.log` file records the iterative TextGrad training run. Review and redact before sharing externally.
-- `utilities/Check_Composition_Consistency.py.py` normalizes alloy compositions, cross-checks nominal vs measured values, and augments CSV datasets with similarity metrics.
+- `utilities/Check_Composition_Consistency.py` normalizes alloy compositions, cross-checks nominal vs measured values, and augments CSV datasets with similarity metrics.
 - `utilities/pdf_token_counter.py` estimates document length (pages, words, tokens) across multiple extraction backends and can export summaries to CSV.
 
 ## Contributing
