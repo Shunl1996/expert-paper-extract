@@ -7,7 +7,7 @@ Repository of Expert-Grounded Prompt Engineering for extracting lattice constant
 ### Prerequisites
 
 - Python 3.12+
-- `pip` (bundled with Python) or [uv](https://docs.astral.sh/uv/) if you prefer that workflow
+- [uv](https://docs.astral.sh/uv/) (installs packages and manages the project environment)
 
 ### 1. Clone the repository
 
@@ -16,27 +16,15 @@ git clone https://github.com/your-org/expert-paper-extract.git
 cd expert-paper-extract
 ```
 
-### 2. Create and activate a virtual environment
+### 2. Install dependencies
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
-```
-
-### 3. Install dependencies
-
-```bash
-pip install --upgrade pip
-pip install -e .
-```
-
-If you are using `uv`, you can alternatively run:
+The project uses `uv` for dependency management. Sync the environment and install the package in editable mode:
 
 ```bash
 uv sync
 ```
 
-### 4. Configure environment variables
+### 3. Configure environment variables
 
 Create a `.env` file in the project root (or update the existing one) with the credentials your workflows require:
 
@@ -50,8 +38,8 @@ Never commit real keys to version control; keep `.env` listed in `.gitignore`.
 
 ## Running the scripts
 
-- The Jupyter notebooks (`textgrad_training.ipynb`, `textgrad_output_evaluation.ipynb`, `json_to_dataframe.ipynb`) contain prompt optimization and output evaluations as described in the paper. Launch them with `jupyter notebook` or `jupyter lab` inside the virtual environment.
-- `large_scale_extraction.py` is the python script that drives large-scale PDF data extraction.
+- The Jupyter notebooks (`textgrad_training.ipynb`, `textgrad_output_evaluation.ipynb`, `json_to_dataframe.ipynb`) contain prompt optimization and output evaluations as described in the paper. Launch them with `uv run jupyter notebook` or `uv run jupyter lab`.
+- `large_scale_extraction.py` is the python script that drives large-scale PDF data extraction. Start it with `uv run python large_scale_extraction.py`.
 
 ## Example outputs and utilities
 
